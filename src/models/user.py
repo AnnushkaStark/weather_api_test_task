@@ -1,10 +1,10 @@
 from typing import TYPE_CHECKING, List
 
-from m2m import UsersCities
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from databases.database import Base
+from .m2m import UsersCities
 
 if TYPE_CHECKING:
     from .city import City
