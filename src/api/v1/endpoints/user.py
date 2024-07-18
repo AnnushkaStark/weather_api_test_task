@@ -8,8 +8,9 @@ from api.dependencies.database import get_async_db
 from crud.user import crud_user
 from models.user import User
 from schemas.token import TokenAccessRefresh
-from schemas.user import UserCreate, UserCreateDB, UserLogin
-from utilies.security.password_hasher import get_password_hash, verify_password
+from schemas.user import UserCreate, UserLogin
+from services import user as service_user
+from utilies.security.password_hasher import  verify_password
 from utilies.security.security import (
     ACCESS_TOKEN_COOKIE_KEY,
     REFRESH_TOKEN_COOKIE_KEY,
@@ -44,9 +45,7 @@ async def create_user(
             status_code=400,
             detail="E-mail alredy exist!",
         )
-    user.password = get_password_hash(user.password)
-    user_data = UserCreateDB(**user.model_dump())
-    return await crud_user.create(db=db, create_schema=user_data)
+    return await service_user.create(db=db, create_data=user)
 
 
 @router.post("/login/", response_model=TokenAccessRefresh)
