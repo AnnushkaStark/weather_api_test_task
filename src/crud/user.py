@@ -23,3 +23,6 @@ class UserCRUD(BaseAsyncCRUD[User, UserBase, UserCreateDB]):
         statement = select(self.model).where(self.model.email == email)
         result = await db.execute(statement)
         return result.scalars().first()
+
+
+crud_user = UserCRUD(User)
