@@ -9,7 +9,7 @@ from crud.city import crud_city
 from models.user import User
 from schemas.city import CityCreate, CityResponse
 from services import city as service_city
-from services import user as service_user
+from services import users_city as users_city_service
 from utilies.weather.get_weather import request_weather
 
 router = APIRouter()
@@ -23,9 +23,7 @@ async def get_weather_in_city(
 ) -> Optional[dict]:
     city.name = city.name.strip().title()
     if found_city := await crud_city.get_by_name(db=db, obj_name=city.name):
-        await service_user.update_search_history(
-            db=db, city_id=found_city.id, user_id=current_user.id
-        )
+        await users_city_service.create_user_city(db=db, user_id=current_user.id, city_id=found_city.id)
         return await request_weather(city=found_city.name)
     weather = await request_weather(city=city.name)
     if weather is None:
