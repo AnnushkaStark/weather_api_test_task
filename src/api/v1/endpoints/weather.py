@@ -28,13 +28,10 @@ async def get_weather_in_city(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Wrong city name"
         )
-    try:
-        await service_city.create(
-            db=db, create_data=city, user_id=current_user.id
-        )
-        return weather
-    except Exception as e:
-        return weather
+    await service_city.create(
+        db=db, create_data=city, user_id=current_user.id
+    )
+    return weather
 
 
 @router.get("/", response_model=List[CityResponse])
