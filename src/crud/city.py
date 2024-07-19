@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from sqlalchemy import insert
+from sqlalchemy import and_, insert
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import joinedload, selectinload
@@ -29,6 +29,22 @@ class CityCRUD(BaseAsyncCRUD[City, CityBase, CityCreateDB]):
         )
         result = await db.execute(statement)
         return result.scalars().unique().all()
+
+    async def get_by_id_and_user_id(
+        self, db: AsyncSession, obj_id: int, user_id: int
+    ) -> Optional[City]:
+        statement = (
+            select(self.model)
+            .options(joinedload(self.model.users))
+            .where(
+                and_(
+                    self.model.id == obj_id,
+                    self.model.users.any(id=user_id),
+                )
+            )
+        )
+        result = await db.execute(statement)
+        return result.scalars().unique().first()
 
     async def create(
         self,
