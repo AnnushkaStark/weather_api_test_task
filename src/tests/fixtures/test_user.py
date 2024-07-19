@@ -16,3 +16,17 @@ async def user_fixture(async_session: AsyncSession) -> User:
     )
     user = await crud_user.create(db=async_session, create_schema=schema)
     return user
+
+
+@pytest_asyncio.fixture
+async def user_wuthout_responsed_cities_fixture(
+    async_session: AsyncSession,
+) -> User:
+    schema = UserCreate(
+        username="User without rsponsed cities",
+        email="mytestmail@gmail.com",
+        password=get_password_hash("qwerty"),
+    )
+
+    user = await crud_user.create(db=async_session, create_schema=schema)
+    return user
