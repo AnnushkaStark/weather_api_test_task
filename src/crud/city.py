@@ -23,13 +23,13 @@ class CityCRUD(BaseAsyncCRUD[City, CityBase, CityCreateDB]):
         self, db: AsyncSession, user_id: int
     ) -> Optional[List[City]]:
         statement = (
-            select(self.model)
+            select(self.model) 
             .options(joinedload(self.model.users))
             .where(self.model.users.any(id=user_id))
         )
         result = await db.execute(statement)
-        return result.scalars().all()
-
+        return result.scalars().unique().all()
+    
     async def create(
         self,
         db: AsyncSession,

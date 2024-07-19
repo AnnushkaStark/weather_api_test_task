@@ -3,8 +3,8 @@ from pydantic import BaseModel
 
 class WeatherResponse(BaseModel):
     city: str
-    temp: int
+    temp: str
     feels_like: str
-    pressure: int
+    pressure: str
     rain: str
     snow: str

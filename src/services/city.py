@@ -1,14 +1,16 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from crud.city import crud_city
-from models import City, User
+from crud.user import crud_user
+from models import City
 from schemas.city import CityCreate, CityCreateDB
 
 
 async def create(
-    db: AsyncSession, create_data: CityCreate, user: User
+    db: AsyncSession, create_data: CityCreate, user_id: int
 ) -> City:
     try:
+        user = await crud_user.get_by_id(db=db, obj_id=user_id)
         create_schema = CityCreateDB(
             **create_data.model_dump(exclude_unset=True)
         )
