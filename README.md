@@ -64,5 +64,5 @@
 2. pytest
 
 ## Контакты  для обратной связи
-https://t.me/Bastrykinaanastasiia
+https://t.me/@Bastrykinaanastasiia
 
